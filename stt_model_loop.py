@@ -90,6 +90,10 @@ def main():
         now = datetime.now()
         datestamp = now.strftime('%y%m%d_%H%M%S')
 
+        if args.enter_to_record:
+            print('Push enter to proceed...')
+            input()
+            
         if args.pretend_i_said:
             text = args.pretend_i_said
         else:
