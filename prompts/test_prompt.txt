@@ -1,0 +1,1 @@
+Input: Give an example of a dog breed.\nAnswer: An example dog breed is corgi.\n\nInput: Tell me a joke.\nAnswer: What does the fish say when it hits the wall? Dam.\n\nInput: %s
