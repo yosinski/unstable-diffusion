@@ -11,7 +11,7 @@ import wave
 import numpy as np
 from datetime import datetime
 
-from util import run_cmd, datestamp
+from util import run_cmd, datestamp, mac_speak, eleven_speak
 from make_parser import make_parser
 from call_model_helper import call_the_model
 
@@ -98,17 +98,18 @@ def main():
         else:
             saveto = f'{args.saveto}_{dt}.flac'
             text = get_text_from_audio(args, saveto)
-        print(f'\nHere is what I heard:\n{text}')
+        print(f'\nHere is what I heard from you:\n{text}')
 
         response = call_the_model(args, text)
-
-        print(f'\nHere is what I have to say to you:\n{response}')
-
         short_response = response.split('.')[0]
+        print(f'\nHere is what I have to say to you:\n{response}')
         print(f'\nHere is what I have to say to you (short version):\n{short_response}')
         
         if args.speak:
-            run_cmd(('say', '-v', 'Daniel', '-r', str(args.voice_rate), response))
+            if args.use_eleven:
+                eleven_speak(args, response)
+            else:
+                mac_speak(args, response)
 
         if args.embed:
             embed()
