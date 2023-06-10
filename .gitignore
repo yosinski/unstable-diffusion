@@ -5,3 +5,6 @@
 *.txt
 *.vtt
 *.wav
+__pycache__
+\#*
+.#*

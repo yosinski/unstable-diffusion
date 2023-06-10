@@ -10,6 +10,7 @@ import whisper
 
 whisper_model_choices = ['tiny', 'base', 'small', 'medium', 'large']
 
+
 def main():
     parser = argparse.ArgumentParser(description='Record some audio and convert it to text using the whisper API.',
                                      formatter_class=lambda prog: argparse.ArgumentDefaultsHelpFormatter(prog)

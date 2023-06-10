@@ -1,45 +1,12 @@
+#! /usr/bin/env python
+
 import argparse
 import os
 import pdb
 import re
 from openai_model import *
 
-def make_parser():
-    parser = argparse.ArgumentParser()
-    parser.add_argument(
-        '--model', type=str, default='text-ada-001', help='openai model name')
-    parser.add_argument(
-        '--prompt_name',
-        type=str,
-        default='test_prompt',
-        help='path to the prompt file')
-    parser.add_argument(
-        '--test_input_name',
-        type=str,
-        default='test',
-        help='path to the user input file')
-    parser.add_argument(
-        '--split_start',
-        type=str,
-        default='Answer: ',
-        help='token indicating start of answer')
-    parser.add_argument(
-        '--split_end',
-        type=str,
-        default=None,
-        help='token indicating end of answer')
-    parser.add_argument(
-        '--temperature', type=float, default=0.5, help='temperature')
-    parser.add_argument(
-        '--max_decoding_steps', type=int, default=128, help='max tokens')
-    parser.add_argument(
-        '--stop_token',
-        type=str,
-        default='',
-        help='stop decoding on token')
-    parser.add_argument(
-        '--api_key', type=str, default=None, help='openai api key to use')
-    return parser
+from make_parser import make_parser
 
 
 def main():
@@ -77,6 +44,7 @@ def main():
     with open(
             os.path.join('outputs', 'model_response.txt'), 'at') as test_file:
         test_file.write(str(extracted_output) + '\n')
+
 
 if __name__ == '__main__':
     main()

@@ -15,14 +15,11 @@ from util import run_cmd
 from make_parser import make_parser
 
 
-whisper_model_choices = ['tiny', 'base', 'small', 'medium', 'large']
-
 CHUNK = 1024 * 2
 FORMAT = pyaudio.paInt16
 NPFORMAT = np.int16
 CHANNELS = 1
 RATE = 44100
-DEFAULT_RECORD_SECONDS = 3
 #WAVE_OUTPUT_FILENAME = 'frompy.wav'
 
 # Max readings**2 for a chunck of length 2048
@@ -65,7 +62,7 @@ def main():
             st = '*' * (1 + int(frac ** .125 * 60))
             #print(f'{ii}: {npdat.sum()}   {sum(data)} {power}')
             #print(f'{ii:02d}: {st}')
-            if ii % 2 == 0:
+            if ii % 1 == 0:
                 #print((npdat**2)[:12])
                 print(f'{frac:.04f} {st}')
             max_power = max(power, max_power)
@@ -90,9 +87,9 @@ def main():
     result = model.transcribe(audio_filename)
     text = result['text']
     print(f'\nHere is what I heard:\n{text}')
-
+    
     if args.speak:
-        run_cmd(('say', text))
+        run_cmd(('say', '-v', 'Daniel', text))
     
     if args.embed:
         embed()
