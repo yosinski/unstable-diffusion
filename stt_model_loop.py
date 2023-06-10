@@ -89,7 +89,7 @@ def main():
     print(f'\nHere is what I heard:\n{text}')
     
     if args.speak:
-        run_cmd(('say', text))
+        run_cmd(('say', '-v', 'Daniel', text))
     
     if args.embed:
         embed()

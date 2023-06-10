@@ -6,3 +6,5 @@
 *.vtt
 *.wav
 __pycache__
+\#*
+.#*
