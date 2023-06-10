@@ -104,26 +104,27 @@ def main():
 
         response = call_the_model(args, text)
 
-        print(f'\nHere is what I have to say to you:\n{response}')
+        #print(f'\nHere is what I have to say to you:\n{response}')
 
-        short_response = response #.split('.')[0]
+        #short_response = response #.split('.')[0]
 
         responses = response.split("\n")
         responses = [x for x in responses if len(x)>0]
-        responses = [x.split(".")[1].strip() for x in responses]
+        responses = [".".join(x.split(".")[1:]).strip() for x in responses]
         responses = [x for x in responses if len(x)>0]
         responses[1:] = ["Well, actually..." + x for x in responses[1:]]
 
         responses = responses[1:]
-        print(responses)
+        #print(responses)
 
         voice_rate = args.voice_rate
-        print(f'\nHere is what I have to say to you (short version):\n{short_response}')
-        for response in responses: 
+        #print(f'\nHere is what I have to say to you (short version):\n{short_response}')
+        for response in responses:
+            print(response) 
             if args.speak:
                 run_cmd(('say', '-v', 'Daniel', '-r', str(voice_rate), response))
             time.sleep(1)
-            voice_rate = int(voice_rate * 1.2)
+            voice_rate = int(voice_rate * 1.3)
 
         if args.embed:
             embed()
