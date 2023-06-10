@@ -6,6 +6,7 @@ DEFAULT_RECORD_SECONDS = 3
 whisper_model_choices = ['tiny', 'base', 'small', 'medium', 'large']
 
 default_api_key = os.environ.get('OPENAI_API_KEY', None)
+default_elevenlabs_api_key = os.environ.get('ELEVENLABS_API_KEY', None)
 
 
 def make_parser(descrip=''):
@@ -65,6 +66,8 @@ def make_parser(descrip=''):
     parser.add_argument('--speak', '-k', action='store_true', help='In addition to printing text to screen, speak it.')
     parser.add_argument('--voice-rate', '-r', type=int, default=175, help='Rate to use for speaking voice')
     parser.add_argument('--embed', '-e', action='store_true', help='Embed in IPython at end.')
+    parser.add_argument('--use-eleven', '-1', action='store_true', help='Use Eleven Labs API instead of Mac say to produce speech.')
+    parser.add_argument('--eleven-labs-key', type=str, default=default_elevenlabs_api_key, help='Eleven Labs API key')
 
 
     return parser

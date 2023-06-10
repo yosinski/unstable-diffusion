@@ -7,7 +7,7 @@ import pdb
 import re
 from openai_model import *
 import speech_recognition as sr
-from util import run_cmd
+from util import run_cmd, datestamp
 import pyaudio
 
 # Text-to-speech engine
@@ -109,7 +109,7 @@ def make_parser():
         default='',
         help='stop decoding on token')
     parser.add_argument(
-        '--api_key', type=str, default='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', help='openai api key to use')
+        '--api_key', type=str, default=None, help='openai api key to use')
     parser.add_argument(
         '--interactive', action='store_true', help='Use chat or not')
     return parser
@@ -144,9 +144,8 @@ def main():
 
     if args.interactive:
         while True:
-            now = datetime.now()
-            datestamp = now.strftime('%y%m%d_%H%M%S')
-            saveto = f'audio_{datestamp}.flac'
+            dt = datestamp()
+            saveto = f'audio_{dt}.flac'
             message = get_text_from_audio(args, saveto)
 
             if message:

@@ -3,3 +3,4 @@ pyaudio
 openai
 IPython
 ipdb
+requests
