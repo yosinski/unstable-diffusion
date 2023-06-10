@@ -1,8 +1,11 @@
+import os
 import argparse
 
 DEFAULT_RECORD_SECONDS = 3
 
 whisper_model_choices = ['tiny', 'base', 'small', 'medium', 'large']
+
+default_api_key = os.environ.get('OPENAI_API_KEY', None)
 
 
 def make_parser(descrip=''):
@@ -13,7 +16,7 @@ def make_parser(descrip=''):
 
     # Args from call_model
     parser.add_argument(
-        '--model', type=str, default='text-ada-001', help='openai model name')
+        '--model', '-m', type=str, default='text-ada-001', help='openai model name')
     parser.add_argument(
         '--prompt_name',
         type=str,
@@ -27,7 +30,8 @@ def make_parser(descrip=''):
     parser.add_argument(
         '--split_start',
         type=str,
-        default='Answer: ',
+        #default='Answer: ',
+        default=None,
         help='token indicating start of answer')
     parser.add_argument(
         '--split_end',
@@ -44,7 +48,7 @@ def make_parser(descrip=''):
         default='',
         help='stop decoding on token')
     parser.add_argument(
-        '--api_key', type=str, default=None, help='openai api key to use')
+        '--api_key', type=str, default=default_api_key, help='Openai api key to use. Set here or by exporting the environment variable OPENAI_API_KEY')
 
 
     # Args from stt_* scripts
@@ -55,6 +59,7 @@ def make_parser(descrip=''):
     parser.add_argument('--seconds', '-s', type=float, default=DEFAULT_RECORD_SECONDS, help='How many seconds to record.')
     parser.add_argument('--verbose', '-v', action='store_true', help='Display more information.')
     parser.add_argument('--speak', '-k', action='store_true', help='In addition to printing text to screen, speak it.')
+    parser.add_argument('--voice-rate', '-r', type=int, default=175, help='Rate to use for speaking voice')
     parser.add_argument('--embed', '-e', action='store_true', help='Embed in IPython at end.')
 
 
