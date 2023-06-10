@@ -11,6 +11,7 @@ import wave
 import numpy as np
 from datetime import datetime
 
+from util import run_cmd
 from make_parser import make_parser
 
 
@@ -86,6 +87,9 @@ def main():
     result = model.transcribe(audio_filename)
     text = result['text']
     print(f'\nHere is what I heard:\n{text}')
+    
+    if args.speak:
+        run_cmd(('say', text))
     
     if args.embed:
         embed()

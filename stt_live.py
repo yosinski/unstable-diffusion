@@ -11,6 +11,9 @@ import wave
 import numpy as np
 from datetime import datetime
 
+from util import run_cmd
+from make_parser import make_parser
+
 
 whisper_model_choices = ['tiny', 'base', 'small', 'medium', 'large']
 
@@ -29,16 +32,7 @@ heuristic_max_power = 826346439192.0
 
 
 def main():
-    parser = argparse.ArgumentParser(description='Record some audio and convert it to text using the whisper API.',
-                                     formatter_class=lambda prog: argparse.ArgumentDefaultsHelpFormatter(prog)
-                                     )
-    parser.add_argument('--model', '-m', type=str, default='base', choices=whisper_model_choices,
-                        help='Which whisper model to use.')
-    parser.add_argument('--saveto', '-o', type=str, default='frompy', help='Filename prefix to record to.')
-    parser.add_argument('--load_audio', '-l', type=str, default=None, help='Skip recording and use audio loaded from LOAD_AUDIO instead.')
-    parser.add_argument('--seconds', '-s', type=float, default=DEFAULT_RECORD_SECONDS, help='How many seconds to record.')
-    parser.add_argument('--verbose', '-v', action='store_true', help='Display more information.')
-    parser.add_argument('--embed', '-e', action='store_true', help='Embed in IPython at end.')
+    parser = make_parser('Record some audio and convert it to text using the whisper API.')
     args = parser.parse_args()
 
     now = datetime.now()
@@ -92,10 +86,13 @@ def main():
 
         audio_filename = saveto
 
-    model = whisper.load_model(args.model)
+    model = whisper.load_model(args.whisper_model)
     result = model.transcribe(audio_filename)
     text = result['text']
     print(f'\nHere is what I heard:\n{text}')
+
+    if args.speak:
+        run_cmd(('say', text))
     
     if args.embed:
         embed()
