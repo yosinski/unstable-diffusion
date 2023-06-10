@@ -109,7 +109,7 @@ def make_parser():
         default='',
         help='stop decoding on token')
     parser.add_argument(
-        '--api_key', type=str, default='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', help='openai api key to use')
+        '--api_key', type=str, default=None, help='openai api key to use')
     parser.add_argument(
         '--interactive', action='store_true', help='Use chat or not')
     return parser
