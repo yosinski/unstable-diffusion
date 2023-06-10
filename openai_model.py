@@ -127,8 +127,7 @@ class OpenaiModelChat():
              temperature: float = 0.0,
              max_tokens: int = 128,
              stop: Optional[List[str]] = None,
-             system_prompt: str = None,
-             user_prompt: str= None):
+             ):
         """Calls the model with specified arguments.
 
         Args:
@@ -145,9 +144,9 @@ class OpenaiModelChat():
         #system_prompt = """Your job is to echo back what a user says, but to offer back five versions of it that are increasingly more extreme and surreal, in a JSON list, where the first item in the list is the same."""
         #prompt = "I am an awful person."
 
-        if system_prompt is None:
-            system_prompt = test_example_prompt
-            
+        system_prompt = self.prompt_string
+        user_prompt = test_example_prompt
+   
         messages = [
                 {"role": "system", "content": f"{system_prompt}"},
                 {"role": "user", "content": user_prompt},
@@ -156,9 +155,10 @@ class OpenaiModelChat():
         # pdb.set_trace()
         result = None
         loop_count = 0
-
+        print(messages)
         while result is None and loop_count < 1: #retry when there is an error, not in use if it's 1
-            try:
+            if True:
+                print(messages,self.model)
                 response = openai.ChatCompletion.create(
                     model=self.model,
                     messages=messages,
@@ -167,10 +167,11 @@ class OpenaiModelChat():
                     max_tokens=max_tokens,
                 )
 
-                # pdb.set_trace()
-                result = response['choices'][0]['text']
+                #pdb.set_trace()
+                result = response['choices'][0]['message']['content']
                 return result
-            except:
+            if False:
+                print("Exception in calling chat completion...")
                 # try to wait a few seconds and attempt again if hitting api error
                 # try 5 times, and if still failing then output "MODEL_ERROR"
                 time.sleep(int(np.random.choice(range(3, 10), 1)[0]))

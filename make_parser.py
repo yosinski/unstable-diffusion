@@ -15,6 +15,8 @@ def make_parser(descrip=''):
     parser.add_argument(
         '--model', type=str, default='text-ada-001', help='openai model name')
     parser.add_argument(
+        '--do_chat', type=int, default=0, help='use chat model or not')
+    parser.add_argument(
         '--prompt_name',
         type=str,
         default='test_prompt',

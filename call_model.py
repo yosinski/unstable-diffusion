@@ -28,19 +28,33 @@ def main():
         if '\\n' in test_input_string:
             test_input_string = re.sub('\\\\n', '\n', test_input_string)
 
-    model = OpenaiModel(
-        args.model, args.api_key, prompt_string=prompt_string)
+    if not args.do_chat:
+        model = OpenaiModel(
+            args.model, args.api_key, prompt_string=prompt_string)
 
-    model_output = model.call(
-        test_example_prompt=test_input_string,
-        temperature=args.temperature,
-        max_tokens=args.max_decoding_steps,
-        stop=args.stop_token)
+        model_output = model.call(
+            test_example_prompt=test_input_string,
+            temperature=args.temperature,
+            max_tokens=args.max_decoding_steps,
+            stop=args.stop_token)
 
-    extracted_output = model.extract_answer(model_output,
+        extracted_output = model.extract_answer(model_output,
                                             args.split_start,
                                             args.split_end)
-    print(extracted_output)
+        print(extracted_output)
+
+    if args.do_chat:
+        model = OpenaiModelChat(
+            args.model, args.api_key, prompt_string=prompt_string)
+
+        model_output = model.call(
+            test_example_prompt=test_input_string,
+            temperature=args.temperature,
+            max_tokens=args.max_decoding_steps,
+            stop=args.stop_token)
+        print(model_output)
+        pdb.set_trace()
+
     with open(
             os.path.join('outputs', 'model_response.txt'), 'at') as test_file:
         test_file.write(str(extracted_output) + '\n')
