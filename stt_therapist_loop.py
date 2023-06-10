@@ -7,7 +7,7 @@ import pdb
 import re
 from openai_model import *
 import speech_recognition as sr
-from util import run_cmd
+from util import run_cmd, datestamp
 import pyaudio
 
 # Text-to-speech engine
@@ -144,9 +144,8 @@ def main():
 
     if args.interactive:
         while True:
-            now = datetime.now()
-            datestamp = now.strftime('%y%m%d_%H%M%S')
-            saveto = f'audio_{datestamp}.flac'
+            dt = datestamp()
+            saveto = f'audio_{dt}.flac'
             message = get_text_from_audio(args, saveto)
 
             if message:

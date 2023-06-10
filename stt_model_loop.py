@@ -11,7 +11,7 @@ import wave
 import numpy as np
 from datetime import datetime
 
-from util import run_cmd
+from util import run_cmd, datestamp
 from make_parser import make_parser
 from call_model_helper import call_the_model
 
@@ -87,8 +87,7 @@ def main():
     args = parser.parse_args()
 
     while True:
-        now = datetime.now()
-        datestamp = now.strftime('%y%m%d_%H%M%S')
+        dt = datestamp()
 
         if args.enter_to_record:
             print('Push enter to proceed...')
@@ -97,7 +96,7 @@ def main():
         if args.pretend_i_said:
             text = args.pretend_i_said
         else:
-            saveto = f'{args.saveto}_{datestamp}.flac'
+            saveto = f'{args.saveto}_{dt}.flac'
             text = get_text_from_audio(args, saveto)
         print(f'\nHere is what I heard:\n{text}')
 
