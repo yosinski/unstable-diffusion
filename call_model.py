@@ -4,6 +4,7 @@ import argparse
 import os
 import pdb
 import re
+import json
 from openai_model import *
 
 from make_parser import make_parser
@@ -52,8 +53,12 @@ def main():
             temperature=args.temperature,
             max_tokens=args.max_decoding_steps,
             stop=args.stop_token)
-        print(model_output)
-        pdb.set_trace()
+
+        extracted_output = model_output
+        
+	#print(model_output)
+        #extracted_object = json.loads(model_output)
+        #pdb.set_trace()
 
     with open(
             os.path.join('outputs', 'model_response.txt'), 'at') as test_file:
@@ -62,3 +67,7 @@ def main():
 
 if __name__ == '__main__':
     main()
+
+
+# invocation for gpt-3.5:
+# python call_model.py --api_key [enterkey] --do_chat 1 --model gpt-3.5-turbo-301 --prompt_name spinout --test_input_name spinout
