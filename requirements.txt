@@ -1,3 +1,5 @@
 openai-whisper
 pyaudio
 openai
+IPython
+ipdb

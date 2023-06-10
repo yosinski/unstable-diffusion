@@ -41,7 +41,7 @@ def make_parser(descrip=''):
         default=None,
         help='token indicating end of answer')
     parser.add_argument(
-        '--temperature', type=float, default=0.5, help='temperature')
+        '--temperature', type=float, default=1, help='temperature')
     parser.add_argument(
         '--max_decoding_steps', type=int, default=128, help='max tokens')
     parser.add_argument(

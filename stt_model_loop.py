@@ -109,7 +109,7 @@ def main():
         print(f'\nHere is what I have to say to you (short version):\n{short_response}')
         
         if args.speak:
-            run_cmd(('say', '-v', 'Daniel', '-r', str(args.voice_rate), short_response))
+            run_cmd(('say', '-v', 'Daniel', '-r', str(args.voice_rate), response))
 
         if args.embed:
             embed()
