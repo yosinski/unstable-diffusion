@@ -18,10 +18,11 @@ def main():
                         help='Which whisper model to use.')
     parser.add_argument('--verbose', '-v', action='store_true', help='Display more information.')
     parser.add_argument('--embed', '-e', action='store_true', help='Embed in IPython at end.')
+    parser.add_argument('audio_file', type=str, help='Which audio file to load')
     args = parser.parse_args()
 
     model = whisper.load_model(args.model)
-    result = model.transcribe('out.flac')
+    result = model.transcribe(args.audio_file)
     text = result['text']
     print(f'\nHere is what I heard:\n{text}')
     
