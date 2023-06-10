@@ -58,6 +58,7 @@ def make_parser(descrip=''):
                         help='Which Whisper model to use.')
     parser.add_argument('--saveto', '-o', type=str, default='frompy', help='Filename prefix to record to.')
     parser.add_argument('--load-audio', '-l', type=str, default=None, help='Skip recording and use audio loaded from LOAD_AUDIO instead.')
+    parser.add_argument('--pretend-i-said', '-p', type=str, default=None, help='Skip all input audio processing and just pretend the user said PRETEND_I_SAID.')
     parser.add_argument('--seconds', '-s', type=float, default=DEFAULT_RECORD_SECONDS, help='How many seconds to record.')
     parser.add_argument('--verbose', '-v', action='store_true', help='Display more information.')
     parser.add_argument('--speak', '-k', action='store_true', help='In addition to printing text to screen, speak it.')
