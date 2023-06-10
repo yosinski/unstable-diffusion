@@ -55,6 +55,7 @@ def main():
             stop=args.stop_token)
 
         extracted_output = model_output
+        print(extracted_output)
         
 	#print(model_output)
         #extracted_object = json.loads(model_output)
