@@ -62,11 +62,12 @@ def make_parser(descrip=''):
     parser.add_argument('--pretend-i-said', '-p', type=str, default=None, help='Skip all input audio processing and just pretend the user said PRETEND_I_SAID.')
     parser.add_argument('--seconds', '-s', type=float, default=DEFAULT_RECORD_SECONDS, help='How many seconds to record.')
     parser.add_argument('--enter-to-record', '-x', action='store_true', help='User has to push entery before recording.')
+    parser.add_argument('--quiet', '-q', action='store_true', help='Display very little information.')
     parser.add_argument('--verbose', '-v', action='store_true', help='Display more information.')
     parser.add_argument('--speak', '-k', action='store_true', help='In addition to printing text to screen, speak it.')
     parser.add_argument('--voice-rate', '-r', type=int, default=175, help='Rate to use for speaking voice')
     parser.add_argument('--embed', '-e', action='store_true', help='Embed in IPython at end.')
-    parser.add_argument('--use-eleven', '-1', action='store_true', help='Use Eleven Labs API instead of Mac say to produce speech.')
+    parser.add_argument('--use-eleven', action='store_true', help='Use Eleven Labs API instead of Mac say to produce speech.')
     parser.add_argument('--eleven-labs-key', type=str, default=default_elevenlabs_api_key, help='Eleven Labs API key')
 
 
