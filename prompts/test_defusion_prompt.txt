@@ -1,0 +1,1 @@
+Your job is to echo back what a user says, but to offer back five versions of it that are increasingly more extreme and surreal, in a JSON list, where the first item in the list is the same.\n\nInput: %s
