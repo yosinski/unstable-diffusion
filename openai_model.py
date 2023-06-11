@@ -155,10 +155,10 @@ class OpenaiModelChat():
         # pdb.set_trace()
         result = None
         loop_count = 0
-        print(messages)
+        #print(messages)
         while result is None and loop_count < 1: #retry when there is an error, not in use if it's 1
             if True:
-                print(messages,self.model)
+                #print(messages,self.model)
                 response = openai.ChatCompletion.create(
                     model=self.model,
                     messages=messages,
