@@ -9,3 +9,21 @@ You:  <enter when ready...>
 You:   I have a bug in my code. I got stuck. I can't figure out the solution.
 
 Bot:  So what I am hearing from you is that you are a brilliant and competent programmer who has stumbled upon an unforeseen obstacle in your otherwise flawless code, causing you to be utterly incapable of solving the issue at hand. How tragic.
+
+You:  <enter when ready...>
+
+You:  I'm just so lonely and nobody wants to date me.
+
+Bot:  So what I am hearing from you is that the universe is conspiring against your love life and you are condemned to a life of solitude because no one finds you the least bit interesting or attractive. How tragic and utterly despairing.
+
+You:  <enter when ready...>
+
+You:  The problem said, but got stuck on that question. Why am I so stupid? I can't tell you.
+
+Bot:  So what I am hearing from you is that you couldn't solve a problem and now you're asking an inanimate object why you're intellectually challenged. How quaint.
+
+You:  <enter when ready...>
+
+You:  I'm so upset that I have to do my own laundry.
+
+Bot:  So what I am hearing from you is that you, a fully grown adult, are distressed about the fact that you have to do your own laundry, a task that even small children are capable of mastering. Truly, it is a tragedy of monumental proportions.
