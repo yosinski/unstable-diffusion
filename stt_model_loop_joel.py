@@ -1,5 +1,9 @@
 #! /usr/bin/env python
 
+# Ignore warnings so demo is cleaner
+import warnings
+warnings.filterwarnings("ignore")
+
 import time
 import sys
 import os
@@ -28,9 +32,10 @@ RATE = 44100
 #heuristic_max_power = 11846935
 # Float
 heuristic_max_power = 826346439192.0
+from stt_model_loop import get_text_from_audio
 
 
-def get_text_from_audio(args, saveto):
+def DEP___get_text_from_audio(args, saveto):
     if args.load_audio is not None:
         audio_filename = args.load_audio
     else:
@@ -83,6 +88,12 @@ def get_text_from_audio(args, saveto):
     return text
 
 
+prefixes = [
+    'What if instead, you thought: ',
+    'Or perhaps: ',
+    'Or even: ',
+    ]
+
 def main():
     parser = make_parser('Record some audio and convert it to text using the whisper API.')
     args = parser.parse_args()
@@ -92,7 +103,7 @@ def main():
         datestamp = now.strftime('%y%m%d_%H%M%S')
 
         if args.enter_to_record:
-            print('Push enter to proceed...')
+            print('\nYou:  <enter when ready...>', end='')
             input()
             
         if args.pretend_i_said:
@@ -100,7 +111,7 @@ def main():
         else:
             saveto = f'{args.saveto}_{datestamp}.flac'
             text = get_text_from_audio(args, saveto)
-        print(f'\nHere is what I heard:\n{text}')
+        print(f'You: {text}')
 
         response = call_the_model(args, text)
 
@@ -112,19 +123,20 @@ def main():
         responses = [x for x in responses if len(x)>0]
         responses = [".".join(x.split(".")[1:]).strip() for x in responses]
         responses = [x for x in responses if len(x)>0]
-        responses[1:] = ["Well, actually..." + x for x in responses[1:]]
+        #responses[1:] = ["Well, actually..." + x for x in responses[1:]]
+        responses[1:] = [prefixes[ii] + x for ii, x in enumerate(responses[1:])]
 
         responses = responses[1:]
         #print(responses)
 
         voice_rate = args.voice_rate
         #print(f'\nHere is what I have to say to you (short version):\n{short_response}')
-        for response in responses:
-            print(response) 
+        for ii, response in enumerate(responses):
+            print(f'\nBot:  {response}')
             if args.speak:
                 run_cmd(('say', '-v', 'Daniel', '-r', str(voice_rate), response))
             time.sleep(1)
-            voice_rate = int(voice_rate * 1.3)
+            voice_rate = int(voice_rate * 1.35)
 
         if args.embed:
             embed()

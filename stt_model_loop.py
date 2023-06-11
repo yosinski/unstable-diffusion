@@ -1,5 +1,9 @@
 #! /usr/bin/env python
 
+# Ignore warnings so demo is cleaner
+import warnings
+warnings.filterwarnings("ignore")
+
 import sys
 import os
 import argparse
@@ -9,12 +13,11 @@ import whisper
 import pyaudio
 import wave
 import numpy as np
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from util import run_cmd, datestamp, mac_speak, eleven_speak
 from make_parser import make_parser
 from call_model_helper import call_the_model
-
 
 CHUNK = 1024 * 2
 FORMAT = pyaudio.paInt16
@@ -42,25 +45,76 @@ def get_text_from_audio(args, saveto):
             input=True,
             frames_per_buffer=CHUNK)
 
-        print("*** recording ***")
+        if not args.quiet:
+            print("*** recording ***")
         frames = []
 
         max_power = 0.0
-        for ii in range(int(RATE / CHUNK * args.seconds)):
+        max_frac = 0.0
+        ii = 0
+        silence_for = 0.0    # How many seconds of silence have occurred
+        last_sound = datetime.now()
+        sound_threshold = .07           # Level of sound required to have heard anything
+        silence_threshold = .03         # Level of sound that counts as silence at end
+        silence_time_theshold = timedelta(seconds=1.0)
+        heard_something = False
+        while True:
+            if ii != 0:
+                print('\b' * 6, end='')
+            st = ('.' * ((ii % 4) + 1)) + (' ' * (5 - (ii % 4)))
+            #print(len(st))
+            print(st, end='')
+            sys.stdout.flush()
+
             data = stream.read(CHUNK)
+
+            now = datetime.now()
+            
             frames.append(data)
             npdat = np.frombuffer(data, dtype=np.int16).astype(np.float64)
             power = (npdat**2).sum()
             frac = min(1.0, power / heuristic_max_power)
+            max_frac = max(frac, max_frac)
+            heard_something = max_frac > sound_threshold
+            silent_now = frac < silence_threshold
+            if not silent_now:
+                last_sound = now
+            silence_for = now - last_sound
+
             st = '*' * (1 + int(frac ** .125 * 60))
             #print(f'{ii}: {npdat.sum()}   {sum(data)} {power}')
             #print(f'{ii:02d}: {st}')
-            if ii % 1 == 0:
+            if ii % 1 == 0 and not args.quiet:
                 #print((npdat**2)[:12])
-                print(f'{frac:.04f} {st}')
+                print(f'{frac:.04f} {"H" if heard_something else "."}{"s" if silent_now else "."} {st}')
             max_power = max(power, max_power)
+            ii += 1
 
-        print('Max power was: ', max_power)
+            if args.seconds > 0:
+                if ii >= int(RATE / CHUNK * args.seconds):
+                    # Finished pre-defined period of recording
+                    break
+            else:
+                #print(frac, silent_now, max_frac, silence_for)
+                if heard_something and silence_for > silence_time_theshold:
+                    # Auto-detect silence and break
+                    if not args.quiet:
+                        print('Silent for long enough!')
+                    break
+
+
+        print('\b' * 6, end='')
+        st = (' ' * 6)
+        print(st, end='')
+        sys.stdout.flush()
+        #print('\b' * 6, end='')
+        #print('\b' * 6)
+        #sys.stdout.flush()
+        #print('\nhi\n')
+        print()
+        
+        if args.verbose:
+            print('Max power was: ', max_power)
         stream.stop_stream()
         stream.close()
         pp.terminate()
@@ -72,7 +126,8 @@ def get_text_from_audio(args, saveto):
         wf.writeframes(b''.join(frames))
         wf.close()
 
-        print(f'\nWrote file: {saveto}')
+        if args.verbose:
+            print(f'\nWrote file: {saveto}')
 
         audio_filename = saveto
 
@@ -90,20 +145,20 @@ def main():
         dt = datestamp()
 
         if args.enter_to_record:
-            print('Push enter to proceed...')
+            print('\nYou:  <enter when ready...>', end='')
             input()
-            
+
         if args.pretend_i_said:
             text = args.pretend_i_said
         else:
             saveto = f'{args.saveto}_{dt}.flac'
             text = get_text_from_audio(args, saveto)
-        print(f'\nHere is what I heard from you:\n{text}')
+        print(f'You: {text}')
 
         response = call_the_model(args, text)
         short_response = response.split('.')[0]
-        print(f'\nHere is what I have to say to you:\n{response}')
-        print(f'\nHere is what I have to say to you (short version):\n{short_response}')
+        print(f'\nBot:  {response}')
+        #print(f'\nHere is what I have to say to you (short version):\n{short_response}')
         
         if args.speak:
             if args.use_eleven:
